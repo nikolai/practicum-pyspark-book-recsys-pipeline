@@ -1,0 +1,4 @@
+python-dotenv==0.14.0
+humanfriendly==10.0
+pyspark==4.2.0
+boto3==1.43.102

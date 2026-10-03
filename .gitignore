@@ -1,0 +1,12 @@
+.env
+.venv/
+.vscode/
+.ipynb_checkpoints/
+draft.md
+features_*
+**/datasets
+deploy_airflow.sh
+.gitlab/
+spark.env
+data/
+__pycache__/

@@ -1,0 +1,30 @@
+services:
+  spark:
+    image: docker.io/apache/spark:4.2.0
+    user: "0:0"
+    entrypoint: ["/bin/bash", "-lc", "sleep infinity"]
+    working_dir: /workspace
+    environment:
+      SPARK_LOCAL_HOSTNAME: localhost
+      AWS_ACCESS_KEY_ID: localminio
+      AWS_SECRET_ACCESS_KEY: localminio123
+    volumes:
+      - .:/workspace
+      - spark-ivy:/root/.ivy2.5.2:Z
+    depends_on:
+      - s3mock
+
+  s3mock:
+    image: docker.io/adobe/s3mock:4.8.0
+    environment:
+      COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS: s3-ds-source
+      COM_ADOBE_TESTING_S3MOCK_STORE_ROOT: /data
+      COM_ADOBE_TESTING_S3MOCK_STORE_RETAIN_FILES_ON_EXIT: "true"
+    ports:
+      - "9090:9090"
+    volumes:
+      - s3-data:/data
+
+volumes:
+  s3-data:
+  spark-ivy:
