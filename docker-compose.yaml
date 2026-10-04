@@ -6,6 +6,7 @@ services:
     working_dir: /workspace
     environment:
       SPARK_LOCAL_HOSTNAME: localhost
+      S3_ENDPOINT_URL: http://s3mock:9090
       AWS_ACCESS_KEY_ID: localminio
       AWS_SECRET_ACCESS_KEY: localminio123
     volumes:
