@@ -128,10 +128,8 @@ OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in ve
 INFO == Загрузка данных ==
 INFO == Очистка данных ==
 INFO == Объединение данных ==
-INFO == Очистка данных ==
-INFO [content] до очистки: пропусков main_content_duration_hours=6, длительность <= 0: 1
-INFO == Объединение данных ==
 INFO == Построение витрин ==
+INFO >>> сейчас проверяем: broadcast off, save um до content/daily
 INFO wrote s3a://s3-ds-20260701-bc5becbfb7/results/S24_project_data/user_content_mart.parquet
 INFO wrote s3a://s3-ds-20260701-bc5becbfb7/results/S24_project_data/user_genre_mart.parquet
 INFO wrote s3a://s3-ds-20260701-bc5becbfb7/results/S24_project_data/user_mart.parquet

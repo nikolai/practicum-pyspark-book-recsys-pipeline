@@ -99,15 +99,17 @@ def valid_audition_hours():
 
 def check_content_duration(con):
     null_dur = con.filter(col('main_content_duration_hours').isNull()).count()
-    le_zero_dur = con.filter(
+    zero_dur = con.filter(
         col('main_content_duration_hours').isNotNull()
-        & (col('main_content_duration_hours') <= 0)
+        & (col('main_content_duration_hours') == 0)
     ).count()
-    logger.info(
-        '[content] до очистки: пропусков main_content_duration_hours=%d, длительность <= 0: %d',
-        null_dur,
-        le_zero_dur,
-    )
+    negative_dur = con.filter(col('main_content_duration_hours') < 0).count()
+    if null_dur > 0:
+        logger.warning('[content] null в main_content_duration_hours: %d', null_dur)
+    if zero_dur > 0:
+        logger.warning('[content] main_content_duration_hours == 0: %d', zero_dur)
+    if negative_dur > 0:
+        logger.warning('[content] main_content_duration_hours < 0: %d', negative_dur)
 
 
 def check_data_quality(aud, con, verbose=False):
@@ -120,6 +122,8 @@ def check_data_quality(aud, con, verbose=False):
     bad = aud.filter(~valid_audition_hours()).count()
     if bad:
         logger.warning('[audition]: %s строк с невалидными hours/hours_sessions_long (0..%s)', bad, MAX_HOURS)
+
+    check_content_duration(con)
 
     dup_aud = aud.groupBy('audition_id').count().filter(col('count') > 1).limit(5).count()
     dup_con = con.groupBy('main_content_id').count().filter(col('count') > 1).limit(5).count()
@@ -507,7 +511,6 @@ def main():
         logger.info(f'Размеры audition после фильтрации: ({aud.count()}, {len(aud.columns)})')
 
     logger.info('== Очистка данных ==')
-    check_content_duration(con)
     check_data_quality(aud, con, verbose=verbose)
     aud = clean_audition(aud, verbose=verbose)
     con = clean_content(con, verbose=verbose)
